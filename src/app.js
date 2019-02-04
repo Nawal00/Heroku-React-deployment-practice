@@ -29,7 +29,7 @@ class App extends React.Component {
         <h1 className="title is-5"> WWE Wrestlers </h1>
         <div className="columns is-multiline">
           {this.state.data.map((wrestler, i) =>
-            <div key={i} className="column" style={{backgroundImage: `url(${wrestler.image}`}}>  </div>
+            <div key={i} className="column is-one-quarter" style={{backgroundImage: `url(${wrestler.image}`}}>  </div>
           )}
         </div>
       </div>
