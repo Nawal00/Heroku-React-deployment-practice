@@ -7,7 +7,7 @@ const app = express()
 
 app.use(bodyParser.json())
 
-mongoose.connect('mongodb://localhost/wwewrestlers')
+mongoose.connect(process.env.MONGODB_URI)
 
 const wrestlerSchema = new mongoose.Schema({
   name: { type: String, required: true },
