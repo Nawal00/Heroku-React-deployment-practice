@@ -1,41 +1,45 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './style.scss'
-import axios from 'axios'
 import 'bulma'
 
 
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
+
+import WrestlerIndex from './components/WrestlerIndex'
+import NewWrestler from './components/NewWrestler'
+
 class App extends React.Component {
-  constructor() {
-    super()
-
-    this.state = {
-      data: []
-    }
-  }
-
-  componentDidMount() {
-    axios.get('/api/wwewrestlers')
-      .then(res => this.setState({ data: res.data }))
-      .catch(err => console.error(err))
-  }
-
-
   render() {
-    if(!this.state.data) return <h1> Loading </h1>
-    console.log(this.state)
     return (
-      <div className="container">
-        <h1 className="title is-5"> WWE Wrestlers </h1>
-        <div className="columns is-multiline">
-          {this.state.data.map((wrestler, i) =>
-            <div key={i} className="column is-one-quarter" style={{backgroundImage: `url(${wrestler.image}`}}>  </div>
-          )}
-        </div>
-      </div>
+      //<Route /> what component to render according to the choosen path
+      <BrowserRouter>
+        <main>
+          <nav className="navbar is-primary">
+            <div className="container">
+              <div className="navbar-start">
+                <Link className="links" to="/"> Home </Link>
+                <Link className="links" to="/wwewrestlers"> Wrestlers </Link>
+                <Link className="links" to="/wwewrestlers/new"> Add Wrestlers </Link>
+              </div>
+              <div className="navbar-end">
+                <Link className="links" to="/register"> Register </Link>
+                <Link className="links" to="/login"> Login </Link>
+              </div>
+            </div>
+          </nav>
+
+          <Switch>
+            <Route path="/wwewrestlers/new" component={NewWrestler} />
+            <Route path="/wwewrestlers" component={WrestlerIndex} />
+          </Switch>
+
+        </main>
+      </BrowserRouter>
     )
   }
 }
+
 
 ReactDOM.render(
   <App />,
