@@ -1,19 +1,42 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
 const app = express()
 
+app.use(bodyParser.json())
 
 mongoose.connect('mongodb://localhost/wwewrestlers')
 
-app.get('/wwewrestlers', (req, res) => {
-  res.json({ message: 'index route'})
+const wrestlerSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  realName: { type: String, required: true},
+  image: { type: String, required: true },
+  weight: { type: String},
+  highlights: { type: String},
+  from: { type: String},
+  signatureMoves: { type: Array }
 })
 
-app.post('/wwewrestlers', (req, res) => {
-  res.json({ message: 'create route'})
+const Wrestler = mongoose.model('wrestler', wrestlerSchema)
+
+app.get('/api/wwewrestlers', (req, res) => {
+  Wrestler
+    .find()
+    .then(wrestlers => res.status(200).json(wrestlers))
+    .catch(err => res.status(404).json(err.message))
+})
+
+app.post('/api/wwewrestlers', (req, res) => {
+  Wrestler
+    .create(req.body)
+    .then(wrestler => res.status(200).json(wrestler))
+    .catch(err => res.status(422).json(err.message))
 })
 
 
+app.use(express.static(`${__dirname}/dist`))
+app.get('/*', (req, res) => res.sendFile(`${__dirname}/dist/index.html`))
 
-app.listen(4000, () => console.log('express is running on 4000'))
+app.listen(process.env.PORT, () => console.log(`Express is running on ${process.env.PORT}`))
