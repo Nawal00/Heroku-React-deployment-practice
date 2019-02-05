@@ -6,6 +6,18 @@ body {
   margin: 0;
 }
 
+nav .links{
+  padding: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  color: white;
+
+  &:hover {
+    color: white;
+    background: rgba(255,255,255, 0.5);
+  }
+}
+
 div.column {
   height: 400px;
   background-size: contain;
